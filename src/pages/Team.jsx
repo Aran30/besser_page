@@ -36,26 +36,27 @@ const initialFallback = (name) =>
       .join('')}</text></svg>`,
   )}`
 
-function MemberCard({ name, photo, link }) {
+function MemberCard({ name, photo, link, index }) {
   return (
     <a
       href={link}
       target="_blank"
       rel="noreferrer"
       aria-label={`${name}, opens in a new tab`}
-      className="group block text-center"
+      className="group block text-center anim-fade-in"
+      style={{ animationDelay: `${Math.min(index * 30, 600)}ms` }}
     >
-      <div className="relative mx-auto h-32 w-32 sm:h-36 sm:w-36 overflow-hidden rounded-full bg-brand-surface ring-2 ring-white shadow-card transition-all duration-300 group-hover:ring-brand group-hover:shadow-lg">
+      <div className="relative mx-auto h-32 w-32 sm:h-36 sm:w-36 overflow-hidden rounded-full bg-brand-surface ring-2 ring-white shadow-card transition-all duration-300 group-hover:ring-brand group-hover:shadow-lg group-hover:-translate-y-0.5">
         <img
           src={photo}
           alt={name}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => {
             e.currentTarget.src = initialFallback(name)
           }}
         />
-        <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-brand/80 via-brand/0 to-transparent opacity-0 transition group-hover:opacity-100">
+        <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-brand/85 via-brand/0 to-transparent opacity-0 transition group-hover:opacity-100">
           <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-brand shadow-card">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -64,7 +65,7 @@ function MemberCard({ name, photo, link }) {
           </span>
         </div>
       </div>
-      <h3 className="mt-4 text-base font-semibold text-brand-ink group-hover:text-brand">
+      <h3 className="mt-4 text-base font-semibold text-brand-ink transition-colors group-hover:text-brand">
         {name}
       </h3>
     </a>
@@ -77,25 +78,37 @@ export default function Team() {
       <PageHeader
         eyebrow="Team"
         title="The great people behind BESSER"
+        subtitle="Researchers and engineers from Luxembourg and beyond, working together to make smart software engineering open, accessible, and reliable."
       />
 
       <section className="section bg-brand-surface">
         <div className="container-x">
-          <div className="grid gap-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 justify-items-center">
-            {team.map((m) => (
-              <MemberCard key={m.name} {...m} />
+          <div className="grid gap-x-8 gap-y-12 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 justify-items-center">
+            {team.map((m, i) => (
+              <MemberCard key={m.name} index={i} {...m} />
             ))}
           </div>
         </div>
       </section>
 
       <section className="section">
-        <div className="container-x text-center max-w-3xl mx-auto">
-          <p className="text-brand-slate">
-            BESSER is funded thanks to an FNR Pearl grant led by the
-            <strong> Luxembourg Institute of Science and Technology</strong> with the participation of the
-            <strong> SnT / University of Luxembourg</strong>.
-          </p>
+        <div className="container-x">
+          <div className="card mx-auto max-w-4xl text-center">
+            <p className="eyebrow">Acknowledgments</p>
+            <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold text-brand-ink">
+              Funded by an FNR Pearl grant
+            </h2>
+            <p className="mt-4 text-brand-slate">
+              BESSER is supported by the Luxembourg National Research Fund (FNR) through its Pearl programme,
+              led by the Luxembourg Institute of Science and Technology with the participation of
+              SnT / University of Luxembourg.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-semibold text-brand-ink">
+              <span className="rounded-full bg-brand/5 px-4 py-1.5 ring-1 ring-brand/10">FNR — Luxembourg National Research Fund</span>
+              <span className="rounded-full bg-brand/5 px-4 py-1.5 ring-1 ring-brand/10">Luxembourg Institute of Science and Technology</span>
+              <span className="rounded-full bg-brand/5 px-4 py-1.5 ring-1 ring-brand/10">SnT / University of Luxembourg</span>
+            </div>
+          </div>
         </div>
       </section>
     </>
